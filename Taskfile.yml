@@ -1,0 +1,94 @@
+version: "3"
+
+silent: true
+
+env:
+  RUN: ./script.sh
+
+tasks:
+  help:
+    desc: Lists tasks.
+    aliases: [default]
+    cmds:
+      - task --list-all
+
+  all:
+    desc: "Format, lint and test"
+    cmds:
+      - task: venv:create
+      - task: format
+      - task: lint
+      - task: test
+
+  clean:
+    desc: Clean the DerivedData folder.
+    cmds:
+      - ${RUN} clean
+
+  venv:create:
+    desc: Create a Python virtual environment.
+    cmds:
+      - ${RUN} venv-create
+
+  venv:clean:
+    desc: Clean the Python virtual environment.
+    cmds:
+      - ${RUN} venv-clean
+
+  format:
+    desc: Format.
+    cmds:
+      - ${RUN} format
+
+  lint:
+    desc: Lint.
+    cmds:
+      - ${RUN} lint
+
+  test:
+    desc: Test.
+    cmds:
+      - ${RUN} test
+
+  print-env-vars:
+    desc: Print some environment variables.
+    cmds:
+      - echo ENVIRONMENT_VARIABLE_1 = $ENVIRONMENT_VARIABLE_1
+      - echo ENVIRONMENT_VARIABLE_2 = $ENVIRONMENT_VARIABLE_2
+    dotenv: [".env"]
+    env:
+      ENVIRONMENT_VARIABLE_1: "value 1"
+
+  run:
+    # command: task run -- --help
+    desc: Run the program.
+    cmds:
+      - ${RUN} run {{.CLI_ARGS}}
+
+  run-var-required:
+    # command: task run-var-required VALUE=B
+    desc: Run the program.
+    requires:
+      vars: [VALUE]
+    cmds:
+      - ${RUN} run --value={{.VALUE}}
+
+  run-var-default:
+    # command: task run-var-default VALUE=B
+    desc: Run the program.
+    vars:
+      VALUE: '{{default "A" .VALUE}}'
+    cmds:
+      - task: run-var-required
+        vars:
+          VALUE: "{{.VALUE}}"
+
+  show-root-dir:
+    desc: Show root directory.
+    cmds:
+      - echo {{.ROOT_DIR}}
+
+  show-is-darwin:
+    desc: Show if is Darwin.
+    cmds:
+      - echo {{eq OS "darwin"}}

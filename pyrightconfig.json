@@ -1,0 +1,3 @@
+{
+    "strict": ["my_package", "tests"],
+}

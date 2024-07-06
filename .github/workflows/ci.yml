@@ -1,0 +1,18 @@
+name: CI
+on: [push]
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Requirements
+        run: ./script.sh venv-create
+      - name: Format
+        run: ./script.sh format-check
+      - name: Lint
+        run: ./script.sh lint
+      - name: Test
+        run: ./script.sh test
+      - name: Run
+        run: ./script.sh run --help

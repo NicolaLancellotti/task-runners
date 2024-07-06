@@ -1,0 +1,5 @@
+black==24.4.2
+isort==5.13.2
+pyright==1.1.370
+pytest==8.2.2
+coverage==7.5.4
